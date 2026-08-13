@@ -91,8 +91,12 @@ const MovieForm = ({
                     className="form-control"
                     value={genreId ?? ""}
                     onChange={event =>
-                        setGenreId(event.target.value)
-                    }
+                        setGenreId(
+                            event.target.value === ""
+                                ? null
+                                : event.target.value
+                        )
+}
                 />
             </div>
 
