@@ -1,4 +1,7 @@
-import { API_BASE_URL, HttpMethod, JSON_HEADERS } from "../constants/constants";
+import { API_BASE_URL, HttpMethod, JSON_HEADERS } from "../constants/Constants";
+import type { MovieDto } from "../dtos/movie/MovieDto";
+import type { MovieCreateDto } from "../dtos/movie/MovieCreateDto";
+import type { MovieUpdateDto } from "../dtos/movie/MovieUpdateDto";
 
 const API_URL = API_BASE_URL + '/movies';
 
@@ -7,7 +10,7 @@ export const fetchMovies = async () :Promise<MovieDto[]> => {
 
     if (!response.ok) {
         throw new Error(
-            `Failed to fetch filmer: ${response.status}`
+            `Failed to fetch movie: ${response.status}`
         );
     }
 
@@ -53,7 +56,7 @@ export const deleteMovie = async (id :string) :Promise<void> => {
     }
 }
 
-export const updateMovie = async (id :string, updateMovie  :MovieUpdateDto) : Promise<void> => {
+export const updateMovie = async (id :string, updateMovie :MovieUpdateDto) : Promise<void> => {
 
     const response = await fetch(`${API_URL}/${id}`, {
         method: HttpMethod.PUT,

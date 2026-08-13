@@ -1,122 +1,117 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useEffect, useState } from "react";
+import type { MovieDto } from "./dtos/movie/MovieDto";
+import MovieTable from "./components/movies/MovieTable";
+import type { MovieCreateDto } from "./dtos/movie/MovieCreateDto";
+import type { MovieUpdateDto } from "./dtos/movie/MovieUpdateDto";
+import {
+    createMovie,
+    fetchMovies,
+    updateMovie,
+    deleteMovie
+} from "./services/MovieService";
+
+import MovieFormModal from "./components/movies/MovieFormModal";
+
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [movies, setMovies] = useState<MovieDto[]>([]);
+  const [showMovieModal, setShowMovieModal] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState<MovieDto | null>(null);
+
+  useEffect(() => {
+      const loadMovies = async () => {
+          const data = await fetchMovies();
+          setMovies(data);
+      };
+
+      loadMovies();
+  }, []);
+
+  const handleAdd = () => {
+    setSelectedMovie(null);
+    setShowMovieModal(true);
+  };
+
+  const handleEdit = (movie: MovieDto) => {
+    setSelectedMovie(movie);
+    setShowMovieModal(true);
+  };
+
+  const handleCloseModal = () => {
+  setShowMovieModal(false);
+  setSelectedMovie(null);
+  };
+
+  const handleDelete = async (id: string) => {
+    await  deleteMovie(id);
+
+    const updatedMovies = await fetchMovies();
+    setMovies(updatedMovies);
+  };
+
+  const handleCreate = async (movie: MovieCreateDto) => {
+    const createdMovie = await createMovie(movie);
+
+    setMovies(currentMovies => [
+        ...currentMovies,
+        createdMovie
+    ]);
+};
+
+const handleUpdate = async (
+    id: string,
+    movie: MovieUpdateDto
+) => {
+    await updateMovie(id, movie);
+
+    const updatedMovies = await fetchMovies();
+    setMovies(updatedMovies);
+};
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      <div className="d-flex flex-column bg-dark text-white min-vh-100">
+          <header className="text-center py-3">
+              <div className="container border rounded border-success">
+                  <h1>Movie App</h1>
+              </div>
+          </header>
 
-      <div className="ticks"></div>
+          <main className="container my-4 text-center flex-grow-1">
+              <section className="border rounded border-success p-3">
+                  <h2>Movies</h2>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
+                  <button
+                    type="button"
+                    className="btn btn-success mb-3"
+                    onClick={handleAdd}
                 >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+                    Add Movie
+                </button>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+                  <MovieTable
+                      movies={movies}
+                      onEdit={handleEdit}
+                      onDelete={handleDelete}
+                  />
+              </section>
+          </main>
+
+          <footer className="bg-dark text-white py-3 mt-5 text-center">
+              <div className="container">
+                  <p className="mb-0">Movie App</p>
+              </div>
+          </footer>
+
+          <MovieFormModal
+            show={showMovieModal}
+            movie={selectedMovie}
+            onClose={handleCloseModal}
+            onCreate={handleCreate}
+            onUpdate={handleUpdate}
+        />
+      </div>
+  );
 }
 
-export default App
+export default App;
