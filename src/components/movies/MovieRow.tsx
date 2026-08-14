@@ -1,4 +1,5 @@
 import type { MovieDto } from "../../dtos/movie/MovieDto";
+import { Link } from "react-router";
 
 interface MovieTableRowProps {
   movie: MovieDto;
@@ -6,10 +7,12 @@ interface MovieTableRowProps {
   onDelete: (id: string) => void;
 }
 
-function MovieTableRow({ movie, onEdit, onDelete }: MovieTableRowProps) {
+const  MovieTableRow = ({ movie, onEdit, onDelete }: MovieTableRowProps) => {
   return (
     <tr>
-      <td>{movie.title}</td>
+      <td>
+        <Link to={`/movies/${movie.id}`}>{movie.title}</Link>
+      </td>
       <td>{movie.year}</td>
       <td>{movie.duration}</td>
       <td>{movie.genreName ?? "No genre"}</td>
