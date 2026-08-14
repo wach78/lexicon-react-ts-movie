@@ -7,7 +7,7 @@ interface MovieTableRowProps {
   onDelete: (id: string) => void;
 }
 
-const  MovieTableRow = ({ movie, onEdit, onDelete }: MovieTableRowProps) => {
+const MovieTableRow = ({ movie, onEdit, onDelete }: MovieTableRowProps) => {
   return (
     <tr>
       <td>
@@ -36,6 +36,6 @@ const  MovieTableRow = ({ movie, onEdit, onDelete }: MovieTableRowProps) => {
       </td>
     </tr>
   );
-}
+};
 
 export default MovieTableRow;

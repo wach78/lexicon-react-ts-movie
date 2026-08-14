@@ -1,5 +1,5 @@
 export interface ActorDto {
-    id: string;
-    name: string;
-    birthYear: number;
+  id: string;
+  name: string;
+  birthYear: number;
 }

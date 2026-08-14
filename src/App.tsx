@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router";
 import MoviePage from "./pages/MoviesPage";
-import MovieDetailsPage from "./pages/MoviesPage";
+import MovieDetailsPage from "./pages/MovieDetailsPage";
 
 const App = () => {
   return (
@@ -14,7 +14,7 @@ const App = () => {
       <main className="container my-4 flex-grow-1">
         <Routes>
           <Route path="/" element={<MoviePage />} />
-          <Route path="/movie/:id" element={<MovieDetailsPage />} />
+          <Route path="/movies/:id" element={<MovieDetailsPage />} />
         </Routes>
       </main>
 

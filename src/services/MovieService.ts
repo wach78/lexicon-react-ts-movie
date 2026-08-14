@@ -2,6 +2,7 @@ import { API_BASE_URL, HttpMethod, JSON_HEADERS } from "../constants/Constants";
 import type { MovieDto } from "../dtos/movie/MovieDto";
 import type { MovieCreateDto } from "../dtos/movie/MovieCreateDto";
 import type { MovieUpdateDto } from "../dtos/movie/MovieUpdateDto";
+import type { MovieDetailDto } from "../dtos/movie/MovieDetailDto";
 
 const API_URL = API_BASE_URL + "/movies";
 
@@ -64,4 +65,16 @@ export const updateMovie = async (
   if (!response.ok) {
     throw new Error(`Kunde inte uppdatera filmen: ${response.status}`);
   }
+};
+
+export const fetchMovieDetails = async (
+  id: string,
+): Promise<MovieDetailDto> => {
+  const response = await fetch(`${API_URL}/${id}/details`);
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch movie details: ${response.status}`);
+  }
+
+  return (await response.json()) as MovieDetailDto;
 };
