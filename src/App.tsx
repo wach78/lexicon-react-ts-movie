@@ -12,7 +12,9 @@ import {
 
 import MovieFormModal from "./components/movies/MovieFormModal";
 
-function App() {
+import { Routes, Route } from "react-router";
+
+const App = () => {
   const [movies, setMovies] = useState<MovieDto[]>([]);
   const [showMovieModal, setShowMovieModal] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<MovieDto | null>(null);
