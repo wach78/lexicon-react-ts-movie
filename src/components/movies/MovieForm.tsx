@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { SubmitEvent } from "react";
 import type { MovieDto } from "../../dtos/movie/MovieDto";
 import type { MovieCreateDto } from "../../dtos/movie/MovieCreateDto";
+import { MOVIE_VALIDATION } from "../../constants/MovieValidationConstants";
 
 interface MovieFormProps {
   movie?: MovieDto | null;
@@ -10,7 +11,7 @@ interface MovieFormProps {
 
 const MovieForm = ({ movie, onSubmit }: MovieFormProps) => {
   const [title, setTitle] = useState(movie?.title ?? "");
-  const [year, setYear] = useState(movie?.year ?? 0);
+  const [year, setYear] = useState(movie?.year ?? MOVIE_VALIDATION.minimumYear);
   const [duration, setDuration] = useState(movie?.duration ?? 0);
   const [genreId, setGenreId] = useState<string | null>(movie?.genreId ?? null);
 
@@ -37,6 +38,7 @@ const MovieForm = ({ movie, onSubmit }: MovieFormProps) => {
         <input
           id="title"
           type="text"
+          maxLength={MOVIE_VALIDATION.titleMaxLength}
           className="form-control"
           value={title}
           onChange={(event) => setTitle(event.target.value)}
@@ -51,6 +53,8 @@ const MovieForm = ({ movie, onSubmit }: MovieFormProps) => {
         <input
           id="year"
           type="number"
+          min={MOVIE_VALIDATION.minimumYear}
+          max={MOVIE_VALIDATION.maximumYear}
           className="form-control"
           value={year}
           onChange={(event) => setYear(Number(event.target.value))}
@@ -65,6 +69,8 @@ const MovieForm = ({ movie, onSubmit }: MovieFormProps) => {
         <input
           id="duration"
           type="number"
+          min={MOVIE_VALIDATION.minimumDuration}
+          max={MOVIE_VALIDATION.maximumDuration}
           className="form-control"
           value={duration}
           onChange={(event) => setDuration(Number(event.target.value))}
