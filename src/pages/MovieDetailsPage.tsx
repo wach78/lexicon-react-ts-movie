@@ -2,10 +2,31 @@ import { fetchMovieDetails } from "../services/MovieService";
 import { useEffect, useState } from "react";
 import type { MovieDetailDto } from "../dtos/movie/MovieDetailDto";
 import { useParams } from "react-router";
+import ReviewForm from "../components/reviews/ReviewForm";
+import type { ReviewCreateDto } from "../dtos/review/ReviewCreateDto";
+import { createReview } from "../services/ReviewService";
+import { Link } from "react-router";
 
 const MovieDetailsPage = () => {
   const [movieDetails, setMovieDetails] = useState<MovieDetailDto | null>(null);
   const { id } = useParams();
+
+  const handleCreateReview = async (review: ReviewCreateDto) => {
+    if (!id) {
+      return;
+    }
+
+    const createdReview = await createReview(id, review);
+
+    setMovieDetails((current) =>
+      current
+        ? {
+            ...current,
+            reviews: [...current.reviews, createdReview],
+          }
+        : current,
+    );
+  };
 
   useEffect(() => {
     if (!id) {
@@ -21,6 +42,9 @@ const MovieDetailsPage = () => {
 
   return (
     <div className="container">
+      <Link to="/" className="btn btn-secondary mb-3">
+        Back to movies
+      </Link>
       <div className="row">
         <div className="col-md-6">
           {movieDetails && (
@@ -41,18 +65,6 @@ const MovieDetailsPage = () => {
                 ))}
               </ul>
 
-              <h3>Reviews</h3>
-              <ul className="list-unstyled mb-3">
-                {movieDetails.reviews.map((review) => (
-                  <li key={review.id}>
-                    <p>Comment: {review.comment} </p>
-                    <p>Rating: {review.rating} </p>
-                    <p>Reviewer: {review.reviewerName} </p>
-                    <hr />
-                  </li>
-                ))}
-              </ul>
-
               <h3>Movie details</h3>
               <ul className="list-unstyled mb-3">
                 <p>{movieDetails.movieDetails?.synopsis}</p>
@@ -63,7 +75,31 @@ const MovieDetailsPage = () => {
           )}
         </div>
 
-        <div className="col-md-6">{/* Content later */}</div>
+        <div className="col-md-6">
+          {movieDetails && (
+            <>
+              <h3>Reviews</h3>
+
+              <ul className="list-unstyled mb-3">
+                {movieDetails.reviews.map((review) => (
+                  <li key={review.id}>
+                    <p>Comment: {review.comment}</p>
+                    <p>Rating: {review.rating}</p>
+                    <p>Reviewer: {review.reviewerName}</p>
+                    <hr />
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-md-6">
+          <h3>Add Review</h3>
+
+          <ReviewForm onSubmit={handleCreateReview} />
+        </div>
       </div>
     </div>
   );
