@@ -91,3 +91,16 @@ export const fetchMovieDetails = async (
 
   return (await response.json()) as MovieDetailDto;
 };
+
+export const addActorToMovie = async (
+  movieId: string,
+  actorId: string,
+): Promise<void> => {
+  const response = await fetch(`${API_URL}/${movieId}/actors/${actorId}`, {
+    method: HttpMethod.POST,
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to add actor to movie: ${response.status}`);
+  }
+};
