@@ -1,4 +1,4 @@
-import { fetchMovieDetails } from "../services/MovieService";
+import { fetchMovieDetails, addActorToMovie } from "../services/MovieService";
 import { useEffect, useState } from "react";
 import type { MovieDetailDto } from "../dtos/movie/MovieDetailDto";
 import { useParams } from "react-router";
@@ -6,9 +6,13 @@ import ReviewForm from "../components/reviews/ReviewForm";
 import type { ReviewCreateDto } from "../dtos/review/ReviewCreateDto";
 import { createReview } from "../services/ReviewService";
 import { Link } from "react-router";
+import type { ActorDto } from "../dtos/actor/ActorDto";
+import { fetchActors } from "../services/ActorService";
 
 const MovieDetailsPage = () => {
   const [movieDetails, setMovieDetails] = useState<MovieDetailDto | null>(null);
+  const [actors, setActors] = useState<ActorDto[]>([]);
+  const [selectedActorId, setSelectedActorId] = useState("");
   const { id } = useParams();
 
   const handleCreateReview = async (review: ReviewCreateDto) => {
@@ -28,16 +32,32 @@ const MovieDetailsPage = () => {
     );
   };
 
+  const handleAddActor = async () => {
+    if (!id || !selectedActorId) {
+      return;
+    }
+
+    await addActorToMovie(id, selectedActorId);
+
+    const updatedMovie = await fetchMovieDetails(id);
+    setMovieDetails(updatedMovie);
+
+    setSelectedActorId("");
+  };
+
   useEffect(() => {
     if (!id) {
       return;
     }
-    const loadMovieDetails = async (id: string) => {
+    const loadData = async (id: string) => {
       const data = await fetchMovieDetails(id);
       setMovieDetails(data);
+
+      const actorData = await fetchActors();
+      setActors(actorData);
     };
 
-    loadMovieDetails(id);
+    loadData(id);
   }, [id]);
 
   return (
@@ -95,6 +115,33 @@ const MovieDetailsPage = () => {
         </div>
       </div>
       <div className="row">
+        <div className="col-md-6">
+          <h3>Add actor</h3>
+          <div className="input-group mb-3">
+            <select
+              className="form-select"
+              value={selectedActorId}
+              onChange={(event) => setSelectedActorId(event.target.value)}
+            >
+              <option value="">Select actor</option>
+
+              {actors.map((actor) => (
+                <option key={actor.id} value={actor.id}>
+                  {actor.name}
+                </option>
+              ))}
+            </select>
+            <button
+              className="btn btn-success"
+              type="button"
+              onClick={handleAddActor}
+              disabled={!selectedActorId}
+            >
+              Add actor
+            </button>
+          </div>
+        </div>
+
         <div className="col-md-6">
           <h3>Add Review</h3>
 
