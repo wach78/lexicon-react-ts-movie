@@ -5,6 +5,7 @@ import type { MovieUpdateDto } from "../dtos/movie/MovieUpdateDto";
 
 import MovieTable from "../components/movies/MovieTable";
 import MovieFormModal from "../components/movies/MovieFormModal";
+import GenreSelect from "../components/movies/GenreSelect";
 
 import {
   createMovie,
@@ -18,10 +19,23 @@ const MoviePage = () => {
   const [showMovieModal, setShowMovieModal] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<MovieDto | null>(null);
 
+  const [selectedGenre, setSelectedGenre] = useState("");
+  const [genres, setGenres] = useState<string[]>([]);
+
   useEffect(() => {
     const loadMovies = async () => {
       const data = await fetchMovies();
       setMovies(data);
+
+      const uniqueGenres = [
+        ...new Set(
+          data
+            .map((movie) => movie.genreName)
+            .filter((genre) => genre !== null),
+        ),
+      ];
+
+      setGenres(uniqueGenres);
     };
 
     loadMovies();
@@ -62,6 +76,14 @@ const MoviePage = () => {
     setMovies(updatedMovies);
   };
 
+  const handleGenreChange = async (genre: string) => {
+    setSelectedGenre(genre);
+
+    const data = await fetchMovies(genre === "" ? undefined : genre);
+
+    setMovies(data);
+  };
+
   return (
     <>
       <section className="border rounded border-success p-3 text-center">
@@ -74,6 +96,12 @@ const MoviePage = () => {
         >
           Add Movie
         </button>
+
+        <GenreSelect
+          genres={genres}
+          selectedGenre={selectedGenre}
+          onChange={handleGenreChange}
+        />
 
         <MovieTable
           movies={movies}

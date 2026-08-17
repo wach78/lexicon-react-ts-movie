@@ -6,8 +6,14 @@ import type { MovieDetailDto } from "../dtos/movie/MovieDetailDto";
 
 const API_URL = API_BASE_URL + "/movies";
 
-export const fetchMovies = async (): Promise<MovieDto[]> => {
-  const response = await fetch(API_URL);
+export const fetchMovies = async (genre?: string): Promise<MovieDto[]> => {
+  const url = new URL(API_URL);
+
+  if (genre) {
+    url.searchParams.set("genre", genre);
+  }
+
+  const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error(`Failed to fetch movie: ${response.status}`);
