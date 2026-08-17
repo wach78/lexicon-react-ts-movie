@@ -6,6 +6,7 @@ import type { MovieUpdateDto } from "../dtos/movie/MovieUpdateDto";
 import MovieTable from "../components/movies/MovieTable";
 import MovieFormModal from "../components/movies/MovieFormModal";
 import GenreSelect from "../components/movies/GenreSelect";
+import MovieSearch from "../components/movies/MovieSearch";
 
 import {
   createMovie,
@@ -21,6 +22,7 @@ const MoviePage = () => {
 
   const [selectedGenre, setSelectedGenre] = useState("");
   const [genres, setGenres] = useState<string[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const loadMovies = async () => {
@@ -84,6 +86,27 @@ const MoviePage = () => {
     setMovies(data);
   };
 
+  const handleSearchChange = async (value: string) => {
+    setSearchTerm(value);
+
+    if (value.length >= 3) {
+      const data = await fetchMovies(
+        selectedGenre === "" ? undefined : selectedGenre,
+        value,
+      );
+
+      setMovies(data);
+    }
+
+    if (value.length === 0) {
+      const data = await fetchMovies(
+        selectedGenre === "" ? undefined : selectedGenre,
+      );
+
+      setMovies(data);
+    }
+  };
+
   return (
     <>
       <section className="border rounded border-success p-3 text-center">
@@ -102,6 +125,8 @@ const MoviePage = () => {
           selectedGenre={selectedGenre}
           onChange={handleGenreChange}
         />
+
+        <MovieSearch searchTerm={searchTerm} onChange={handleSearchChange} />
 
         <MovieTable
           movies={movies}

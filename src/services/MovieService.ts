@@ -6,11 +6,18 @@ import type { MovieDetailDto } from "../dtos/movie/MovieDetailDto";
 
 const API_URL = API_BASE_URL + "/movies";
 
-export const fetchMovies = async (genre?: string): Promise<MovieDto[]> => {
+export const fetchMovies = async (
+  genre?: string,
+  search?: string,
+): Promise<MovieDto[]> => {
   const url = new URL(API_URL);
 
   if (genre) {
     url.searchParams.set("genre", genre);
+  }
+
+  if (search) {
+    url.searchParams.set("search", search);
   }
 
   const response = await fetch(url);
