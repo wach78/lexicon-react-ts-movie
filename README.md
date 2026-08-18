@@ -1,73 +1,81 @@
-# React + TypeScript + Vite
+# React TypeScript Movie App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a practice exercise for working with React and TypeScript.
 
-Currently, two official plugins are available:
+The application uses the **MovieApi** ASP.NET Core Web API as its backend for movie, actor, genre, and review data.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## MovieApi
 
-## React Compiler
+This frontend uses the [MovieApi](https://github.com/wach78/lexicon-MovieApi) ASP.NET Core Web API as its backend.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Technologies
 
-## Expanding the ESLint configuration
+- React
+- TypeScript
+- Vite
+- React Router
+- Bootstrap
+- Fetch API
+- ASP.NET Core MovieApi backend
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Features
 
-```js
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
+The application currently supports:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- Displaying a list of movies
+- Adding movies
+- Editing movies
+- Deleting movies
+- Viewing movie details
+- Viewing actors and reviews
+- Adding reviews to movies
+- Filtering movies by genre
+- Searching for movies
+- Adding actors to movies
+- Navigation with React Router
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+## MovieApi
+
+This frontend requires the separate **MovieApi** project to be running.
+
+The API provides endpoints for:
+
+- Movies
+- Actors
+- Reviews
+- Movie details
+- Movie and actor relationships
+
+## Run the project
+
+Install dependencies:
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Start the development server:
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
-
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+```bash
+npm run dev
 ```
+
+The MovieApi backend must also be running for the application to retrieve and modify data.
+
+## Purpose
+
+The purpose of this project is to practice:
+
+- React components
+- React state with `useState`
+- Side effects with `useEffect`
+- TypeScript interfaces and DTOs
+- React Router
+- Forms and validation
+- API communication with `fetch`
+- Query parameters and filtering
+- Working with relationships between API resources
+
+## Note
+
+This is an educational exercise and not a production application.
