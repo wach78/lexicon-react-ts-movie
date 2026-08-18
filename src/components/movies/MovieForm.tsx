@@ -12,7 +12,7 @@ interface MovieFormProps {
 const MovieForm = ({ movie, onSubmit }: MovieFormProps) => {
   const [title, setTitle] = useState(movie?.title ?? "");
   const [year, setYear] = useState(movie?.year ?? MOVIE_VALIDATION.minimumYear);
-  const [duration, setDuration] = useState(movie?.duration ?? 0);
+  const [duration, setDuration] = useState(movie?.duration ?? MOVIE_VALIDATION.minimumDuration);
   const [genreId, setGenreId] = useState<string | null>(movie?.genreId ?? null);
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
