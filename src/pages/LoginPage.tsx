@@ -11,12 +11,10 @@ const LoginPage = () => {
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const tokens = await login({
+    await login({
       username,
       password,
     });
-
-    sessionStorage.setItem("accessToken", tokens.accessToken);
 
     navigate("/");
   };
