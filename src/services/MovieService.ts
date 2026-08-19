@@ -3,6 +3,7 @@ import type { MovieDto } from "../dtos/movie/MovieDto";
 import type { MovieCreateDto } from "../dtos/movie/MovieCreateDto";
 import type { MovieUpdateDto } from "../dtos/movie/MovieUpdateDto";
 import type { MovieDetailDto } from "../dtos/movie/MovieDetailDto";
+import { authFetch } from "./AuthService";
 
 const API_URL = API_BASE_URL + "/movies";
 
@@ -20,7 +21,7 @@ export const fetchMovies = async (
     url.searchParams.set("search", search);
   }
 
-  const response = await fetch(url);
+  const response = await authFetch(url);
 
   if (!response.ok) {
     throw new Error(`Failed to fetch movie: ${response.status}`);
@@ -30,7 +31,7 @@ export const fetchMovies = async (
 };
 
 export const fetchMovie = async (id: string): Promise<MovieDto> => {
-  const response = await fetch(`${API_URL}/${id}`);
+  const response = await authFetch(`${API_URL}/${id}`);
 
   if (!response.ok) {
     throw new Error(`Kunde inte hämta filmen: ${response.status}`);
@@ -42,7 +43,7 @@ export const fetchMovie = async (id: string): Promise<MovieDto> => {
 export const createMovie = async (
   newMovie: MovieCreateDto,
 ): Promise<MovieDto> => {
-  const response = await fetch(API_URL, {
+  const response = await authFetch(API_URL, {
     method: HttpMethod.POST,
     headers: JSON_HEADERS,
     body: JSON.stringify(newMovie),
@@ -56,7 +57,7 @@ export const createMovie = async (
 };
 
 export const deleteMovie = async (id: string): Promise<void> => {
-  const response = await fetch(`${API_URL}/${id}`, {
+  const response = await authFetch(`${API_URL}/${id}`, {
     method: HttpMethod.DELETE,
   });
 
@@ -69,7 +70,7 @@ export const updateMovie = async (
   id: string,
   updateMovie: MovieUpdateDto,
 ): Promise<void> => {
-  const response = await fetch(`${API_URL}/${id}`, {
+  const response = await authFetch(`${API_URL}/${id}`, {
     method: HttpMethod.PUT,
     headers: JSON_HEADERS,
     body: JSON.stringify(updateMovie),
@@ -83,7 +84,7 @@ export const updateMovie = async (
 export const fetchMovieDetails = async (
   id: string,
 ): Promise<MovieDetailDto> => {
-  const response = await fetch(`${API_URL}/${id}/details`);
+  const response = await authFetch(`${API_URL}/${id}/details`);
 
   if (!response.ok) {
     throw new Error(`Failed to fetch movie details: ${response.status}`);
@@ -96,7 +97,7 @@ export const addActorToMovie = async (
   movieId: string,
   actorId: string,
 ): Promise<void> => {
-  const response = await fetch(`${API_URL}/${movieId}/actors/${actorId}`, {
+  const response = await authFetch(`${API_URL}/${movieId}/actors/${actorId}`, {
     method: HttpMethod.POST,
   });
 
