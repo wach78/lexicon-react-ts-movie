@@ -12,7 +12,7 @@ import {
   /*authFetch,
   checkAuth,*/
   login,
- /* logout,
+  /* logout,
   refreshSession,*/
 } from "../../src/services/AuthService";
 
