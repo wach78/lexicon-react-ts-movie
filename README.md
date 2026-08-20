@@ -54,7 +54,7 @@ The React application does not read or store the JWT access token or refresh tok
 Authentication cookies are sent automatically by the browser using:
 
 ```ts
-credentials: "include"
+credentials: "include";
 ```
 
 The backend uses the access token to authenticate protected API requests.

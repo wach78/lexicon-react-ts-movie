@@ -24,7 +24,7 @@ export const login = async (loginDto: LoginDto): Promise<void> => {
     throw new Error(`Login failed: ${response.status}`);
   }
 
-// Important: create a new CSRF token after authentication
+  // Important: create a new CSRF token after authentication
   await getCsrfToken();
 };
 
