@@ -4,7 +4,7 @@ import { login } from "../services/AuthService";
 import { useNavigate } from "react-router";
 
 const LoginPage = () => {
-  const [username, setUsername] = useState("");
+  const [email, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
@@ -12,7 +12,7 @@ const LoginPage = () => {
     event.preventDefault();
 
     await login({
-      username,
+      email,
       password,
     });
 
@@ -26,15 +26,15 @@ const LoginPage = () => {
 
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label htmlFor="username" className="form-label">
+            <label htmlFor="email" className="form-label">
               Username
             </label>
 
             <input
-              id="username"
-              type="text"
+              id="email"
+              type="email"
               className="form-control"
-              value={username}
+              value={email}
               onChange={(event) => setUsername(event.target.value)}
               required
             />
